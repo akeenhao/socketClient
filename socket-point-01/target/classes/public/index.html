@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<p>输入需要查询的点：<input style="width: 900px" value="" id="pointId"/></p>
+<input  type="button" value="获取信息" id='btnAjax'>
+<br/>
+<br/>
+<h2>点详细信息:</h2>
+<h3></h3>
+
+<script type="text/javascript">
+    document.querySelector('#btnAjax').onclick = function () {
+        var ajaxObj = new XMLHttpRequest();
+        ajaxObj.open('post', "http://localhost:8100/getPoint", true);
+        var data;
+        data = new FormData();
+        var pointId = document.getElementById('pointId').value;
+//        data.append("point", "\\\\DEMOPROJECT\\CAR0.UPDATETIME");
+        data.append("point", pointId);
+
+        ajaxObj.onreadystatechange = function () {
+            if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {
+                console.log('数据返回成功');
+                console.log(ajaxObj.responseText);
+                document.querySelector('h3').innerHTML = ajaxObj.responseText;
+            }
+        }
+        ajaxObj.send(data);
+    }
+</script>
+</body>
+</html>

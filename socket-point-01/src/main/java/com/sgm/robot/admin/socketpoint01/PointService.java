@@ -8,7 +8,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Scanner;
+
 @Service
 public class PointService {
 
@@ -25,21 +25,19 @@ public class PointService {
         DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream());
         DataInputStream inputStream = new DataInputStream(socket.getInputStream());
 
-        Scanner input = new Scanner(System.in);
+        if ("0".equals(point)) {
+            return "null";
+        }
+        byte[] b_utf8 = point.getBytes("UTF-8");
 
-            if ("0".equals(point)) {
-                return "null";
-            }
-            byte[] b_utf8 = point.getBytes("UTF-8");
-
-            outputStream.write(b_utf8);
-            byte[] buff = new byte[1024];
-            inputStream.read(buff);
-            String buffer = new String(buff, "utf-8");
-            if (StringUtils.isBlank(buffer)) {
-                return "null";
-            }
-            content += buffer;
+        outputStream.write(b_utf8);
+        byte[] buff = new byte[1024];
+        inputStream.read(buff);
+        String buffer = new String(buff, "utf-8");
+        if (StringUtils.isBlank(buffer)) {
+            return "null";
+        }
+        content += buffer;
 
         socket.close();
         return content;
