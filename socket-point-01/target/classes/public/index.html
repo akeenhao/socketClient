@@ -1,25 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
+    <script src="js/jquery.js"></script>
 </head>
 <body>
 <p>输入需要查询的点：<input style="width: 900px" value="" id="pointId"/></p>
-<input  type="button" value="获取信息" id='btnAjax'>
+<input  type="button" value="获取完整信息" id='pointDetails'>
+<input  type="button" value="获取点值" id='pointValue'>
 <br/>
 <br/>
-<h2>点详细信息:</h2>
+<h2>结果信息:</h2>
 <h3></h3>
+<br/>
+<p>输入需要查询的点集合（逗号分隔）：<input style="width: 900px" value="" id="pointIds"/></p>
+<input  type="button" value="获取多点信息" id='pointsDetails' onclick="login()">
+<h2>结果信息:</h2>
+<h4 id="pointsDetailsRes"></h4>
+
+
 
 <script type="text/javascript">
-    document.querySelector('#btnAjax').onclick = function () {
+
+
+    function login() {
+        console.log("shenme",document.getElementById('pointIds').value);
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "http://10.21.12.32:8100/getPoints",
+            data: {
+                "points": document.getElementById('pointIds').value,
+            },
+            success: function (dataResult) {
+                if (!dataResult){
+                    document.getElementById('pointsDetailsRes').innerHTML = "无响应";
+                    return
+                }
+                document.getElementById('pointsDetailsRes').innerHTML = JSON.stringify(dataResult);
+            },
+            error: function (XMLHttpResponse) {
+            }
+        });
+    }
+
+
+    document.querySelector('#pointDetails').onclick = function () {
         var ajaxObj = new XMLHttpRequest();
         ajaxObj.open('post', "http://localhost:8100/getPoint", true);
         var data;
         data = new FormData();
         var pointId = document.getElementById('pointId').value;
-//        data.append("point", "\\\\DEMOPROJECT\\CAR0.UPDATETIME");
         data.append("point", pointId);
 
         ajaxObj.onreadystatechange = function () {
@@ -31,6 +63,42 @@
         }
         ajaxObj.send(data);
     }
+    document.querySelector('#pointValue').onclick = function () {
+        var ajaxObj = new XMLHttpRequest();
+        ajaxObj.open('post', "http://localhost:8100/getPointValue", true);
+        var data;
+        data = new FormData();
+        var pointId = document.getElementById('pointId').value;
+        data.append("point", pointId);
+
+        ajaxObj.onreadystatechange = function () {
+            if ( ajaxObj.status == 200) {
+                console.log('数据返回成功');
+                console.log(ajaxObj.responseText);
+                document.querySelector('h3').innerHTML = ajaxObj.responseText;
+            }
+        }
+        ajaxObj.send(data);
+    }
+
+//    document.querySelector('#pointsDetails').onclick = function () {
+//        var ajaxObj = new XMLHttpRequest();
+//        ajaxObj.set
+//        ajaxObj.open('post', "http://10.21.12.32:8100/getPoints", true);
+//        var data;
+//        data = new FormData();
+//        var pointId = document.getElementById('pointIds').value;
+//        data.append("points", pointId);
+//        ajaxObj.send(data);
+//
+//        ajaxObj.onreadystatechange = function () {
+//            if (ajaxObj.status == 200) {
+//                console.log('数据返回成功');
+//                console.log(ajaxObj.responseText);
+//                document.getElementById('pointsDetailsRes').innerHTML = ajaxObj.responseText;
+//            }
+//        }
+//    }
 </script>
 </body>
 </html>

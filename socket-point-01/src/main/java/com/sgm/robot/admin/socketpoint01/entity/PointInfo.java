@@ -4,9 +4,11 @@ import lombok.Data;
 
 @Data
 public class PointInfo {
-    private String pointId;
+    private int pointIndex;
+    private String pointName;
     private String pointValue;
-    private String pointMessage;
+    private String message;
     private String pointFlag;
-    private String pointState;
+    private String flag;
+    private String port;
 }

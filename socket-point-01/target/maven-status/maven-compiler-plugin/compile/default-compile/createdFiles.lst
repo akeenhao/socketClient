@@ -1,0 +1,5 @@
+com\sgm\robot\admin\socketpoint01\entity\PointInfo.class
+com\sgm\robot\admin\socketpoint01\config\DefaultController.class
+com\sgm\robot\admin\socketpoint01\controller\PointController.class
+com\sgm\robot\admin\socketpoint01\service\PointService.class
+com\sgm\robot\admin\socketpoint01\SocketPoint01Application.class
